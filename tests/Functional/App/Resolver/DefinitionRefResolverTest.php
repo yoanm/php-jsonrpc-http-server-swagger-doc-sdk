@@ -9,7 +9,7 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
 
 /**
- * @covers \Yoanm\JsonRpcServer\App\Resolver\DefinitionRefResolver
+ * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver
  *
  * @group DefinitionRefResolver
  */
