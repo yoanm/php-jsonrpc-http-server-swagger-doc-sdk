@@ -26,7 +26,7 @@
     },
     "require": {
         "php": ">5.5",
-        "yoanm/jsonrpc-server-doc-sdk": "dev-feature/improve"
+        "yoanm/jsonrpc-server-doc-sdk": "dev-release/1.0.0"
     },
     "require-dev": {
         "behat/behat": "~3.0",
