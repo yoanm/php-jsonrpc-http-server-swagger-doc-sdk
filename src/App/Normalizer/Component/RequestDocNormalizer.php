@@ -34,18 +34,18 @@ class RequestDocNormalizer
         $requestSchema = ['allOf' => [$this->shapeNormalizer->getRequestShapeDefinition()]];
         // Append custom if params required
         if (null !== $method->getParamsDoc()) {
+            $methodParamsDefinitionRef = $this->definitionRefResolver->getDefinitionRef(
+                $this->definitionRefResolver->getMethodDefinitionId(
+                    $method,
+                    DefinitionRefResolver::METHOD_PARAMS_DEFINITION_TYPE
+                )
+            );
+
             $requestSchema['allOf'][] = [
                 'type' => 'object',
                 'required' => ['params'],
                 'properties' => [
-                    'params' => [
-                        '$ref' => $this->definitionRefResolver->getDefinitionRef(
-                            $this->definitionRefResolver->getMethodDefinitionId(
-                                $method,
-                                DefinitionRefResolver::METHOD_PARAMS_DEFINITION_TYPE
-                            )
-                        )
-                    ],
+                    'params' => ['$ref' => $methodParamsDefinitionRef],
                 ],
             ];
         }
