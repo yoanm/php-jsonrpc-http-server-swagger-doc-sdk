@@ -158,17 +158,20 @@ class TypeDocNormalizer
     protected function guessItemsType(array $siblingList)
     {
         $self = $this;
-        $typeList = array_map(
-            function (TypeDoc $sibling) use ($self) {
-                return $self->schemaTypeNormalizer->normalize($sibling);
-            },
-            $siblingList
+        $uniqueTypeList = array_unique(
+            array_map(
+                function (TypeDoc $sibling) use ($self) {
+                    return $self->schemaTypeNormalizer->normalize($sibling);
+                },
+                $siblingList
+            )
         );
-        $uniqueTypeList = array_unique($typeList);
+
         if (count($uniqueTypeList) !== 1) {
             // default string if sub item type not guessable
             return 'string';
         }
+
         return array_shift($uniqueTypeList);
     }
 
