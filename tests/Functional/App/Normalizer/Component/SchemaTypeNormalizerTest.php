@@ -41,7 +41,7 @@ class SchemaTypeNormalizerTest extends TestCase
     {
         $this->assertSame(
             'string',
-            $this->resolver->normalize($this->prophesize(NotManagedTypeDoc::class)->reveal())
+            $this->resolver->normalize(new NotManagedTypeDoc())
         );
     }
 
