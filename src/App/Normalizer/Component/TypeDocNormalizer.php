@@ -157,22 +157,19 @@ class TypeDocNormalizer
      */
     protected function guessItemsType(array $siblingList)
     {
-        $siblingsType = null;
-        foreach ($siblingList as $sibling) {
-            $newType = $this->schemaTypeNormalizer->normalize($sibling);
-            if (null === $siblingsType) {
-                $siblingsType = $newType;
-            } else {
-                // If contains different types => fallback to string
-                if ($siblingsType !== $newType) {
-                    $siblingsType = null;
-                    break;
-                }
-            }
+        $self = $this;
+        $typeList = array_map(
+            function (TypeDoc $sibling) use ($self) {
+                return $self->schemaTypeNormalizer->normalize($sibling);
+            },
+            $siblingList
+        );
+        $uniqueTypeList = array_unique($typeList);
+        if (count($uniqueTypeList) !== 1) {
+            // default string if sub item type not guessable
+            return 'string';
         }
-
-        // default string if sub item type not guessable
-        return $siblingsType ?? 'string';
+        return array_shift($uniqueTypeList);
     }
 
     /**
