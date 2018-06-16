@@ -2,6 +2,7 @@
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
 use phpDocumentor\Reflection\Type;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\ArrayDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\CollectionDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\NumberDoc;
@@ -14,6 +15,8 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\Type\TypeDoc;
  */
 class TypeDocNormalizer
 {
+    use ArrayAppendHelperTrait;
+
     /** @var SchemaTypeNormalizer */
     private $schemaTypeNormalizer;
 
@@ -199,46 +202,5 @@ class TypeDocNormalizer
         );
 
         return $paramDocMinMax;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed  $value
-     * @param array  $doc
-     *
-     * @return array
-     */
-    private function appendIfValueHaveSiblings(string $key, array $value, array $doc = [])
-    {
-        return $this->appendIf((count($value) > 0), $key, $value, $doc);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed  $value
-     * @param array  $doc
-     *
-     * @return array
-     */
-    private function appendIfValueNotNull(string $key, $value, array $doc = [])
-    {
-        return $this->appendIf((null !== $value), $key, $value, $doc);
-    }
-
-    /**
-     * @param bool   $doAppend
-     * @param string $key
-     * @param mixed  $value
-     * @param array  $doc
-     *
-     * @return array
-     */
-    private function appendIf(bool $doAppend, string $key, $value, array $doc = [])
-    {
-        if (true === $doAppend) {
-            $doc[$key] = $value;
-        }
-
-        return $doc;
     }
 }
