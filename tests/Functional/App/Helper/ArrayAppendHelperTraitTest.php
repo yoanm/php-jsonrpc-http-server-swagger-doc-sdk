@@ -3,6 +3,7 @@ namespace Tests\Functional\App\Helper;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Tests\Common\Helper\ConcreteArrayAppendHelper;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 

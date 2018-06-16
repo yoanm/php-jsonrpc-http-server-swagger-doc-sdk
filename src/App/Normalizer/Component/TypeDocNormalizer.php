@@ -1,7 +1,6 @@
 <?php
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
-use phpDocumentor\Reflection\Type;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\ArrayDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\CollectionDoc;

@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Functional\App\Helper;
+namespace Tests\Common\Helper;
 
 use Prophecy\Argument;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait;
