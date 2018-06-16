@@ -1,7 +1,6 @@
 <?php
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
-use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Helper\ExternalSchemaNormalizerHelper;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ServerDoc;
