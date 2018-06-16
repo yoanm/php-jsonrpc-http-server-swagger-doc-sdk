@@ -7,7 +7,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\OperationDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\RequestDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ResponseDocNormalizer;
-use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ShapeNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;

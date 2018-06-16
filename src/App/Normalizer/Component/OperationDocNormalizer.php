@@ -85,12 +85,15 @@ class OperationDocNormalizer
 
         $responseDescription = $this->getResponseDescription($method);
         if (null !== $responseDescription) {
-            $docDescription['description'] = isset($docDescription['description'])
+            $hasInitialDescription = isset($docDescription['description'])
                 && strlen($docDescription['description']) > 0
-                ? $docDescription['description'] . "\n"
-                : ''
             ;
-            $docDescription['description'] = $docDescription['description'] . $responseDescription;
+            $docDescription['description'] = sprintf(
+                '%s%s%s',
+                ($hasInitialDescription ? $docDescription['description'] : ''),
+                ($hasInitialDescription ? "\n" : ''),
+                $responseDescription
+            );
         }
 
         return $docDescription;
@@ -118,14 +121,7 @@ STRING;
                     $indentString,
                     array_map(
                         function (ErrorDoc $errorDoc) use ($self) {
-                            return sprintf(
-                                '*%s* (**Models->%s**)',
-                                $errorDoc->getTitle(),
-                                $self->definitionRefResolver->getErrorDefinitionId(
-                                    $errorDoc,
-                                    DefinitionRefResolver::CUSTOM_ERROR_DEFINITION_TYPE
-                                )
-                            );
+                            return $self->formatErrorForDescription($errorDoc);
                         },
                         $method->getCustomErrorList()
                     )
@@ -134,5 +130,17 @@ STRING;
         }
 
         return null;
+    }
+
+    private function formatErrorForDescription(ErrorDoc $errorDoc)
+    {
+        return sprintf(
+            '*%s* (**Models->%s**)',
+            $errorDoc->getTitle(),
+            $this->definitionRefResolver->getErrorDefinitionId(
+                $errorDoc,
+                DefinitionRefResolver::CUSTOM_ERROR_DEFINITION_TYPE
+            )
+        );
     }
 }
