@@ -1,9 +1,12 @@
 <?php
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
+use SebastianBergmann\CodeCoverage\Report\Xml\Method;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
+use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ServerDoc;
+use Yoanm\JsonRpcServerDoc\Domain\Model\Type\TypeDoc;
 
 /**
  * Class ExternalSchemaListDocNormalizer
@@ -117,22 +120,24 @@ class ExternalSchemaListDocNormalizer
     {
         $list = [];
         // Create request params schema if provided
-        if (null !== $method->getParamsDoc()) {
-            $key = $this->definitionRefResolver->getMethodDefinitionId(
+        $list = $this->appendAndNormalizeIfNotNull(
+            $this->definitionRefResolver->getMethodDefinitionId(
                 $method,
                 DefinitionRefResolver::METHOD_PARAMS_DEFINITION_TYPE
-            );
-            $list[$key] = $this->typeDocNormalizer->normalize($method->getParamsDoc());
-        }
+            ),
+            $method->getParamsDoc(),
+            $list
+        );
 
         // Create custom result schema if provided
-        if (null !== $method->getResultDoc()) {
-            $key = $this->definitionRefResolver->getMethodDefinitionId(
+        $list = $this->appendAndNormalizeIfNotNull(
+            $this->definitionRefResolver->getMethodDefinitionId(
                 $method,
                 DefinitionRefResolver::METHOD_RESULT_DEFINITION_TYPE
-            );
-            $list[$key] = $this->typeDocNormalizer->normalize($method->getResultDoc());
-        }
+            ),
+            $method->getResultDoc(),
+            $list
+        );
 
         return $list;
     }
@@ -149,20 +154,24 @@ class ExternalSchemaListDocNormalizer
             ],
         ];
 
-        $codeList = [];
-        foreach ($doc->getServerErrorList() as $errorDoc) {
-            $codeList[] = $errorDoc->getCode();
-        }
-        foreach ($doc->getGlobalErrorList() as $errorDoc) {
-            $codeList[] = $errorDoc->getCode();
-        }
-        foreach ($doc->getMethodList() as $method) {
-            foreach ($method->getCustomErrorList() as $errorDoc) {
-                $codeList[] = $errorDoc->getCode();
-            }
-        }
+        $codeList = array_unique(
+            array_map(
+                function (ErrorDoc $errorDoc) {
+                    return $errorDoc->getCode();
+                },
+                array_merge(
+                    $doc->getServerErrorList(),
+                    $doc->getGlobalErrorList(),
+                    array_map(
+                        function (MethodDoc $methodDoc) {
+                            return $methodDoc->getCustomErrorList();
+                        },
+                        $doc->getMethodList()
+                    )
+                )
+            )
+        );
 
-        $codeList = array_unique($codeList);
         if (count($codeList) > 0) {
             $propertyList['code']['enum'] = $codeList;
         }
@@ -193,6 +202,22 @@ class ExternalSchemaListDocNormalizer
             $key = $this->definitionRefResolver->getErrorDefinitionId($errorDoc, $definitionType);
 
             $list[$key] = $this->errorDocNormalizer->normalize($errorDoc);
+        }
+
+        return $list;
+    }
+
+    /**
+     * @param string  $key
+     * @param TypeDoc $value
+     * @param array   $list
+     *
+     * @return array
+     */
+    protected function appendAndNormalizeIfNotNull(string $key, TypeDoc $value, array $list = [])
+    {
+        if (null !== $value) {
+            $list[$key] = $this->typeDocNormalizer->normalize($value);
         }
 
         return $list;
