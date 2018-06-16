@@ -38,12 +38,14 @@ class TypeDocNormalizer
             $paramDocRequired
         ) = $this->appendObjectDoc($doc, $siblingsDoc, $paramDocRequired);
 
-        $hasFormat = ($doc instanceof StringDoc && null !== $doc->getFormat());
-        $format = $hasFormat ? $doc->getFormat() : null;
+        $format = ($doc instanceof StringDoc && null !== $doc->getFormat())
+            ? $doc->getFormat()
+            : null
+        ;
 
         return $this->appendIfValueNotNull('description', $doc->getDescription())
             + ['type' => $this->schemaTypeNormalizer->normalize($doc)]
-            + $this->appendIf($hasFormat, 'format', $format)
+            + $this->appendIfValueNotNull('format', $format)
             + ['x-nullable' => ($doc->isNullable() === true)]
             + $paramDocRequired
             + $this->appendIfValueNotNull('default', $doc->getDefault())
@@ -72,12 +74,12 @@ class TypeDocNormalizer
             $paramDocMinMax = $this->appendIfValueNotNull('maximum', $doc->getMax(), $paramDocMinMax);
             $isInclusiveMax = ($doc->getMax() && false === $doc->isInclusiveMax());
             $paramDocMinMax = $this->appendIf($isInclusiveMax, 'exclusiveMaximum', true, $paramDocMinMax);
-        } elseif ($doc instanceof ArrayDoc || get_class($doc) === CollectionDoc::class) {
-            $paramDocMinMax = $this->appendIfValueNotNull('minItems', $doc->getMinItem(), $paramDocMinMax);
-            $paramDocMinMax = $this->appendIfValueNotNull('maxItems', $doc->getMaxItem(), $paramDocMinMax);
         } elseif ($doc instanceof ObjectDoc) {
             $paramDocMinMax = $this->appendIfValueNotNull('minProperties', $doc->getMinItem(), $paramDocMinMax);
             $paramDocMinMax = $this->appendIfValueNotNull('maxProperties', $doc->getMaxItem(), $paramDocMinMax);
+        } elseif ($doc instanceof CollectionDoc) {
+            $paramDocMinMax = $this->appendIfValueNotNull('minItems', $doc->getMinItem(), $paramDocMinMax);
+            $paramDocMinMax = $this->appendIfValueNotNull('maxItems', $doc->getMaxItem(), $paramDocMinMax);
         }
 
         return $paramDocMinMax;
@@ -95,7 +97,7 @@ class TypeDocNormalizer
         if (!$doc instanceof ArrayDoc && get_class($doc) !== CollectionDoc::class) {
             return $siblingsDoc;
         }
-
+        /** @var $doc ArrayDoc|CollectionDoc */
         // add mandatory "items" field
         if ($doc instanceof ArrayDoc && null !== $doc->getItemValidation()) {
             $siblingsDoc['items'] = $this->normalize($doc->getItemValidation());

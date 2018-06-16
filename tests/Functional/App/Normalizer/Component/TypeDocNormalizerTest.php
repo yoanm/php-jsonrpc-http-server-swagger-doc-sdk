@@ -43,6 +43,13 @@ class TypeDocNormalizerTest extends TestCase
     public function provideSimpleManagedTypeDocList()
     {
         return [
+            'Simple Doc' => [
+                'typeDoc' => new TypeDocNs\TypeDoc(),
+                'expected' => [
+                    'type' => 'string',
+                    'x-nullable' => true,
+                ],
+            ],
             'Simple ScalarDoc' => [
                 'typeDoc' => new TypeDocNs\ScalarDoc(),
                 'expected' => [
@@ -117,6 +124,25 @@ class TypeDocNormalizerTest extends TestCase
     public function provideFullyDefinedManagedTypeDocList()
     {
         return [
+            'Fully defined Doc' => [
+                'typeDoc' => (new TypeDocNs\TypeDoc())
+                    ->addAllowedValue('A')
+                    ->addAllowedValue('B')
+                    ->setNullable(false)
+                    ->setName('my-name')
+                    ->setRequired(true)
+                    ->setDescription('my-description')
+                    ->setExample('my-example')
+                    ->setDefault('my-default'),
+                'expected' => [
+                    'description' => 'my-description',
+                    'type' => 'string',
+                    'x-nullable' => false,
+                    'default' => 'my-default',
+                    'example' => 'my-example',
+                    'enum' => ['A', 'B'],
+                ],
+            ],
             'Fully defined ScalarDoc' => [
                 'typeDoc' => (new TypeDocNs\ScalarDoc())
                     ->setNullable(false)
@@ -330,6 +356,16 @@ class TypeDocNormalizerTest extends TestCase
     public function provideBasicManagedTypeDocList()
     {
         return [
+            'Basic Doc' => [
+                'typeDoc' => (new TypeDocNs\TypeDoc())
+                    ->addAllowedValue(1)
+                    ->addAllowedValue(23),
+                'expected' => [
+                    'type' => 'string',
+                    'x-nullable' => true,
+                    'enum' => [1, 23],
+                ],
+            ],
             'Basic ScalarDoc' => [
                 'typeDoc' => (new TypeDocNs\ScalarDoc())
                     ->setNullable(false)
