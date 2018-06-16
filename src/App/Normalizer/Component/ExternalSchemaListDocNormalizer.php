@@ -20,8 +20,10 @@ class ExternalSchemaListDocNormalizer
     private $shapeNormalizer;
 
     /**
-     * @param ExternalSchemaNormalizerHelper $externalSchemaNormalizerHelper
-     * @param ShapeNormalizer                $shapeNormalizer
+     * @param DefinitionRefResolver $definitionRefResolver
+     * @param TypeDocNormalizer     $typeDocNormalizer
+     * @param ErrorDocNormalizer    $errorDocNormalizer
+     * @param ShapeNormalizer       $shapeNormalizer
      */
     public function __construct(
         DefinitionRefResolver $definitionRefResolver,
