@@ -1,6 +1,7 @@
 <?php
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
+use phpDocumentor\Reflection\Type;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\ArrayDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\CollectionDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\Type\NumberDoc;
@@ -66,12 +67,14 @@ class TypeDocNormalizer
             $paramDocMinMax = $this->appendIfValueNotNull('maxLength', $doc->getMaxLength(), $paramDocMinMax);
         } elseif ($doc instanceof NumberDoc) {
             $paramDocMinMax = $this->appendNumberMinMax($doc, $paramDocMinMax);
-        } elseif ($doc instanceof ObjectDoc) {
-            $paramDocMinMax = $this->appendIfValueNotNull('minProperties', $doc->getMinItem(), $paramDocMinMax);
-            $paramDocMinMax = $this->appendIfValueNotNull('maxProperties', $doc->getMaxItem(), $paramDocMinMax);
         } elseif ($doc instanceof CollectionDoc) {
-            $paramDocMinMax = $this->appendIfValueNotNull('minItems', $doc->getMinItem(), $paramDocMinMax);
-            $paramDocMinMax = $this->appendIfValueNotNull('maxItems', $doc->getMaxItem(), $paramDocMinMax);
+            if ($doc instanceof ObjectDoc) {
+                $paramDocMinMax = $this->appendIfValueNotNull('minProperties', $doc->getMinItem(), $paramDocMinMax);
+                $paramDocMinMax = $this->appendIfValueNotNull('maxProperties', $doc->getMaxItem(), $paramDocMinMax);
+            } else {
+                $paramDocMinMax = $this->appendIfValueNotNull('minItems', $doc->getMinItem(), $paramDocMinMax);
+                $paramDocMinMax = $this->appendIfValueNotNull('maxItems', $doc->getMaxItem(), $paramDocMinMax);
+            }
         }
 
         return $paramDocMinMax;
@@ -117,14 +120,29 @@ class TypeDocNormalizer
             $siblingsDoc['additionalProperties']['description'] = "Extra property";
         }
 
-        $siblingDocList = [];
-        $requiredSiblings = [];
-        foreach ($doc->getSiblingList() as $sibling) {
-            if (true === $sibling->isRequired()) {
-                $requiredSiblings[] = $sibling->getName();
-            }
-            $siblingDocList[$sibling->getName()] = $this->normalize($sibling);
-        }
+        $self = $this;
+        $siblingDocList = array_reduce(
+            $doc->getSiblingList(),
+            function (array $carry, TypeDoc $sibling) use ($self) {
+                $carry[$sibling->getName()] = $self->normalize($sibling);
+
+                return $carry;
+            },
+            []
+        );
+        $requiredSiblings = array_keys(// Keeps only keys
+            array_filter(// Remove not required
+                array_reduce(// Convert to $carray[PROPERTY_NAME] = IS_REQUIRED
+                    $doc->getSiblingList(),
+                    function (array $carry, TypeDoc $sibling) {
+                        $carry[$sibling->getName()] = $sibling->isRequired();
+
+                        return $carry;
+                    },
+                    []
+                )
+            )
+        );
 
         $siblingsDoc = $this->appendIfValueHaveSiblings('properties', $siblingDocList, $siblingsDoc);
         $paramDocRequired = $this->appendIfValueHaveSiblings('required', $requiredSiblings, $paramDocRequired);
