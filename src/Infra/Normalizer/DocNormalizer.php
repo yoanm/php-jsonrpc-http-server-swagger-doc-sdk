@@ -129,7 +129,6 @@ class DocNormalizer
         );
     }
 
-
     /**
      * @param TagDoc $tag
      *
