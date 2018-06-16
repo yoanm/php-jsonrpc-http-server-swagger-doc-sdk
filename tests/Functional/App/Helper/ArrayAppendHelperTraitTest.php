@@ -34,7 +34,8 @@ class ArrayAppendHelperTraitTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            $this->helper->testAppendIf($doAppend, $key, $value, $previous));
+            $this->helper->testAppendIf($doAppend, $key, $value, $previous)
+        );
     }
 
     /**
@@ -47,7 +48,8 @@ class ArrayAppendHelperTraitTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            $this->helper->testAppendIfValueNotNull($key, $value, $previous));
+            $this->helper->testAppendIfValueNotNull($key, $value, $previous)
+        );
     }
 
     /**
@@ -60,7 +62,8 @@ class ArrayAppendHelperTraitTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            $this->helper->testAppendIfValueHaveSiblings($key, $value, $previous));
+            $this->helper->testAppendIfValueHaveSiblings($key, $value, $previous)
+        );
     }
 
     /**
