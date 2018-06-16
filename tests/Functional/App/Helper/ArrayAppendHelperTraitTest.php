@@ -7,7 +7,7 @@ use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 
 /**
- * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ArrayAppendHelperTrait
+ * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\App\Helper\ArrayAppendHelperTrait
  *
  * @group ArrayAppendHelperTrait
  */
