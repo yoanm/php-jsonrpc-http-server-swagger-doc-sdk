@@ -50,7 +50,7 @@ class TypeDocNormalizer
             + $paramDocRequired
             + $this->appendIfValueNotNull('default', $doc->getDefault())
             + $this->appendIfValueNotNull('example', $doc->getExample())
-            + $this->getEnumDoc($doc)
+            + $this->appendIfValueHaveSiblings('enum', array_values($doc->getAllowedValueList()))
             + $this->getMinMaxDoc($doc)
             + $siblingsDoc
         ;
@@ -68,12 +68,7 @@ class TypeDocNormalizer
             $paramDocMinMax = $this->appendIfValueNotNull('minLength', $doc->getMinLength(), $paramDocMinMax);
             $paramDocMinMax = $this->appendIfValueNotNull('maxLength', $doc->getMaxLength(), $paramDocMinMax);
         } elseif ($doc instanceof NumberDoc) {
-            $paramDocMinMax = $this->appendIfValueNotNull('minimum', $doc->getMin(), $paramDocMinMax);
-            $isInclusiveMin = ($doc->getMin() && false === $doc->isInclusiveMin());
-            $paramDocMinMax = $this->appendIf($isInclusiveMin, 'exclusiveMinimum', true, $paramDocMinMax);
-            $paramDocMinMax = $this->appendIfValueNotNull('maximum', $doc->getMax(), $paramDocMinMax);
-            $isInclusiveMax = ($doc->getMax() && false === $doc->isInclusiveMax());
-            $paramDocMinMax = $this->appendIf($isInclusiveMax, 'exclusiveMaximum', true, $paramDocMinMax);
+            $paramDocMinMax = $this->appendNumberMinMax($doc, $paramDocMinMax);
         } elseif ($doc instanceof ObjectDoc) {
             $paramDocMinMax = $this->appendIfValueNotNull('minProperties', $doc->getMinItem(), $paramDocMinMax);
             $paramDocMinMax = $this->appendIfValueNotNull('maxProperties', $doc->getMaxItem(), $paramDocMinMax);
@@ -125,41 +120,31 @@ class TypeDocNormalizer
             $siblingsDoc['additionalProperties']['description'] = "Extra property";
         }
 
-        if (count($doc->getSiblingList())) {
-            $siblingDocList = [];
-            $requiredSiblings = [];
-            foreach ($doc->getSiblingList() as $sibling) {
-                if (true === $sibling->isRequired()) {
-                    $requiredSiblings[] = $sibling->getName();
-                }
-                $siblingDocList[$sibling->getName()] = $this->normalize($sibling);
+        $siblingDocList = [];
+        $requiredSiblings = [];
+        foreach ($doc->getSiblingList() as $sibling) {
+            if (true === $sibling->isRequired()) {
+                $requiredSiblings[] = $sibling->getName();
             }
-            $siblingsDoc['properties'] = $siblingDocList;
-            $paramDocRequired = $this->appendIf(
-                (count($requiredSiblings) > 0),
-                'required',
-                $requiredSiblings,
-                $paramDocRequired
-            );
+            $siblingDocList[$sibling->getName()] = $this->normalize($sibling);
         }
+
+        $paramDocRequired = $this->appendIfValueHaveSiblings('properties', $siblingDocList, $siblingsDoc);
+        $paramDocRequired = $this->appendIfValueHaveSiblings('required', $requiredSiblings, $paramDocRequired);
 
         return [$siblingsDoc, $paramDocRequired];
     }
 
     /**
-     * @param TypeDoc $doc
+     * @param string $key
+     * @param mixed  $value
+     * @param array  $doc
+     *
      * @return array
      */
-    protected function getEnumDoc(TypeDoc $doc)
+    private function appendIfValueHaveSiblings(string $key, array $value, array $doc = [])
     {
-        $paramDocEnum = [];
-        if (count($doc->getAllowedValueList())) {
-            foreach ($doc->getAllowedValueList() as $value) {
-                $paramDocEnum['enum'][] = $value;
-            }
-        }
-
-        return $paramDocEnum;
+        return $this->appendIf((count($value) > 0), $key, $value, $doc);
     }
 
     /**
@@ -214,5 +199,31 @@ class TypeDocNormalizer
 
         // default string if sub item type not guessable
         return $siblingsType ?? 'string';
+    }
+
+    /**
+     * @param NumberDoc $doc
+     * @param array     $paramDocMinMax
+     *
+     * @return array
+     */
+    private function appendNumberMinMax(NumberDoc $doc, array $paramDocMinMax)
+    {
+        $paramDocMinMax = $this->appendIfValueNotNull('minimum', $doc->getMin(), $paramDocMinMax);
+        $paramDocMinMax = $this->appendIf(
+            ($doc->getMin() && false === $doc->isInclusiveMin()),
+            'exclusiveMinimum',
+            true,
+            $paramDocMinMax
+        );
+        $paramDocMinMax = $this->appendIfValueNotNull('maximum', $doc->getMax(), $paramDocMinMax);
+        $paramDocMinMax = $this->appendIf(
+            ($doc->getMax() && false === $doc->isInclusiveMax()),
+            'exclusiveMaximum',
+            true,
+            $paramDocMinMax
+        );
+
+        return $paramDocMinMax;
     }
 }
