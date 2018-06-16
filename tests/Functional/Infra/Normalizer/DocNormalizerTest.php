@@ -107,6 +107,36 @@ class DocNormalizerTest extends TestCase
                     'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
                 ],
             ],
+            'Doc with host' => [
+                'errorDoc' => (new HttpServerDoc())
+                    ->setHost('my-host')
+                ,
+                'expected' => [
+                    'swagger' => '2.0',
+                    'host' => 'my-host',
+                    'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
+                ],
+            ],
+            'Doc with basePath' => [
+                'errorDoc' => (new HttpServerDoc())
+                    ->setBasePath('my-basePath')
+                ,
+                'expected' => [
+                    'swagger' => '2.0',
+                    'basePath' => 'my-basePath',
+                    'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
+                ],
+            ],
+            'Doc with schemes' => [
+                'errorDoc' => (new HttpServerDoc())
+                    ->setSchemeList(['my-scheme'])
+                ,
+                'expected' => [
+                    'swagger' => '2.0',
+                    'schemes' => ['my-scheme'],
+                    'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
+                ],
+            ],
             'Doc with methods' => [
                 'errorDoc' => (new HttpServerDoc())
                     ->addMethod(new MethodDoc('method-1', 'MethodId1'))
@@ -117,6 +147,54 @@ class DocNormalizerTest extends TestCase
                     'paths' => [
                         '/MethodId1/..' => ['post' => self::DEFAULT_OPERATION_DOC],
                         '/MethodId2/..' => ['post' => self::DEFAULT_OPERATION_DOC],
+                    ],
+                    'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
+                ],
+            ],
+            'Doc with methods and endpoint' => [
+                'errorDoc' => (new HttpServerDoc())
+                    ->setEndpoint('/my-endpoint')
+                    ->addMethod(new MethodDoc('method-1', 'MethodId1'))
+                    ->addMethod(new MethodDoc('method-2', 'MethodId2'))
+                ,
+                'expected' => [
+                    'swagger' => '2.0',
+                    'paths' => [
+                        '/MethodId1/../my-endpoint' => ['post' => self::DEFAULT_OPERATION_DOC],
+                        '/MethodId2/../my-endpoint' => ['post' => self::DEFAULT_OPERATION_DOC],
+                    ],
+                    'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
+                ],
+            ],
+            'Fully configured Doc' => [
+                'errorDoc' => (new HttpServerDoc())
+                    ->setHost('my-host')
+                    ->setBasePath('my-basePath')
+                    ->setSchemeList(['my-scheme'])
+                    ->setEndpoint('/my-endpoint')
+                    ->setName('my-name')
+                    ->setVersion('my-version')
+                    ->addTag(new TagDoc('tag1'))
+                    ->addTag((new TagDoc('tag2'))->setDescription('tag2 desc'))
+                    ->addMethod(new MethodDoc('method-1', 'MethodId1'))
+                    ->addMethod(new MethodDoc('method-2', 'MethodId2'))
+                ,
+                'expected' => [
+                    'swagger' => '2.0',
+                    'info' => [
+                        'title' => 'my-name',
+                        'version' => 'my-version',
+                    ],
+                    'host' => 'my-host',
+                    'basePath' => 'my-basePath',
+                    'schemes' => ['my-scheme'],
+                    'tags' => [
+                        ['name' => 'tag1'],
+                        ['name' => 'tag2', 'description' => 'tag2 desc'],
+                    ],
+                    'paths' => [
+                        '/MethodId1/../my-endpoint' => ['post' => self::DEFAULT_OPERATION_DOC],
+                        '/MethodId2/../my-endpoint' => ['post' => self::DEFAULT_OPERATION_DOC],
                     ],
                     'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
                 ],
