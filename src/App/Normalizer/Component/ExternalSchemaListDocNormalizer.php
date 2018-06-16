@@ -154,21 +154,27 @@ class ExternalSchemaListDocNormalizer
             ],
         ];
 
+        $errorList = array_merge($doc->getServerErrorList(), $doc->getGlobalErrorList());
+        $errorList = array_reduce(
+            array_map(
+                function (MethodDoc $methodDoc) {
+                    return $methodDoc->getCustomErrorList();
+                },
+                $doc->getMethodList()
+            ),
+            function (array $carry, array $subErrorList) {
+                $carry = array_merge($carry, $subErrorList);
+
+                return $carry;
+            },
+            $errorList
+        );
         $codeList = array_unique(
             array_map(
                 function (ErrorDoc $errorDoc) {
                     return $errorDoc->getCode();
                 },
-                array_merge(
-                    $doc->getServerErrorList(),
-                    $doc->getGlobalErrorList(),
-                    array_map(
-                        function (MethodDoc $methodDoc) {
-                            return $methodDoc->getCustomErrorList();
-                        },
-                        $doc->getMethodList()
-                    )
-                )
+                $errorList
             )
         );
 
@@ -208,13 +214,13 @@ class ExternalSchemaListDocNormalizer
     }
 
     /**
-     * @param string  $key
-     * @param TypeDoc $value
-     * @param array   $list
+     * @param string       $key
+     * @param TypeDoc|null $value
+     * @param array        $list
      *
      * @return array
      */
-    protected function appendAndNormalizeIfNotNull(string $key, TypeDoc $value, array $list = [])
+    protected function appendAndNormalizeIfNotNull(string $key, $value, array $list = [])
     {
         if (null !== $value) {
             $list[$key] = $this->typeDocNormalizer->normalize($value);
