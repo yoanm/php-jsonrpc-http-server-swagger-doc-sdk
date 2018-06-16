@@ -16,11 +16,11 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\Type as TypeDocNS;
 class SchemaTypeNormalizerTest extends TestCase
 {
     /** @var SchemaTypeNormalizer */
-    private $resolver;
+    private $normalizer;
 
     public function setUp()
     {
-        $this->resolver = new SchemaTypeNormalizer();
+        $this->normalizer = new SchemaTypeNormalizer();
     }
 
     /**
@@ -33,7 +33,7 @@ class SchemaTypeNormalizerTest extends TestCase
     {
         $this->assertSame(
             $expected,
-            $this->resolver->normalize($typeDoc)
+            $this->normalizer->normalize($typeDoc)
         );
     }
 
@@ -41,7 +41,7 @@ class SchemaTypeNormalizerTest extends TestCase
     {
         $this->assertSame(
             'string',
-            $this->resolver->normalize(new NotManagedTypeDoc())
+            $this->normalizer->normalize(new NotManagedTypeDoc())
         );
     }
 
