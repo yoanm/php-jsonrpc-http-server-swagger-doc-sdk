@@ -28,7 +28,7 @@ class ResultDocNormalizer
     public function normalize(MethodDoc $method)
     {
         if (null !== $method->getResultDoc()) {
-            $result = [
+            return [
                 '$ref' => $this->definitionRefResolver->getDefinitionRef(
                     $this->definitionRefResolver->getMethodDefinitionId(
                         $method,
@@ -36,10 +36,8 @@ class ResultDocNormalizer
                     )
                 )
             ];
-        } else {
-            $result = ['description' => 'Method result'];
         }
 
-        return $result;
+        return ['description' => 'Method result'];
     }
 }
