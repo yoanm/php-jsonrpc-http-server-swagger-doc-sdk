@@ -22,8 +22,6 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\Type as TypeDocNS;
  */
 class ExternalSchemaListDocNormalizerTest extends TestCase
 {
-    /** @var DefinitionRefResolver|ObjectProphecy */
-    private $definitionRefResolver;
     /** @var TypeDocNormalizer|ObjectProphecy */
     private $typeDocNormalizer;
     /** @var ErrorDocNormalizer|ObjectProphecy */
@@ -35,8 +33,6 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
 
     public function setUp()
     {
-
-        $this->definitionRefResolver = $this->prophesize(DefinitionRefResolver::class);
         $this->typeDocNormalizer = $this->prophesize(TypeDocNormalizer::class);
         $this->errorDocNormalizer = $this->prophesize(ErrorDocNormalizer::class);
         $this->shapeNormalizer = $this->prophesize(ShapeNormalizer::class);
