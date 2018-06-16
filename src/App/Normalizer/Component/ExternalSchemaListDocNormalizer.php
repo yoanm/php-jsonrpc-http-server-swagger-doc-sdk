@@ -118,7 +118,8 @@ class ExternalSchemaListDocNormalizer
         // Create request params schema if provided
         if (null !== $method->getParamsDoc()) {
             $key = $this->definitionRefResolver->getMethodDefinitionId(
-                $method, DefinitionRefResolver::METHOD_PARAMS_DEFINITION_TYPE
+                $method,
+                DefinitionRefResolver::METHOD_PARAMS_DEFINITION_TYPE
             );
             $list[$key] = $this->typeDocNormalizer->normalize($method->getParamsDoc());
         }
@@ -126,7 +127,8 @@ class ExternalSchemaListDocNormalizer
         // Create custom result schema if provided
         if (null !== $method->getResultDoc()) {
             $key = $this->definitionRefResolver->getMethodDefinitionId(
-                $method, DefinitionRefResolver::METHOD_RESULT_DEFINITION_TYPE
+                $method,
+                DefinitionRefResolver::METHOD_RESULT_DEFINITION_TYPE
             );
             $list[$key] = $this->typeDocNormalizer->normalize($method->getResultDoc());
         }
