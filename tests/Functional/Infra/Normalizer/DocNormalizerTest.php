@@ -12,7 +12,7 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\TagDoc;
 
 /**
- * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\DocNormalizer
+ * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\Infra\Normalizer\DocNormalizer
  *
  * @group DocNormalizer
  */
