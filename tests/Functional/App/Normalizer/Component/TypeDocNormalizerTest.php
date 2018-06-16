@@ -445,6 +445,9 @@ class TypeDocNormalizerTest extends TestCase
             ],
             'Basic CollectionDoc' => [
                 'typeDoc' => (new TypeDocNs\CollectionDoc())
+                    ->addSibling(new TypeDocNs\StringDoc())
+                    ->addSibling(new TypeDocNs\StringDoc())
+                    ->addSibling(new TypeDocNs\StringDoc())
                     ->setMaxItem(5)
                     ->setExample(['my-example'])
                     ->setDefault(['my-default']),
