@@ -67,9 +67,9 @@ class ShapeNormalizerTest extends TestCase
             'Unexpected jsonrpc property example for request'
         );
         $this->assertSame(
-            $shape['properties']['method']['title'],
+            $shape['properties']['params']['title'],
             'Method parameters',
-            'Unexpected method property title for request'
+            'Unexpected params property title for request'
         );
     }
 
@@ -89,7 +89,7 @@ class ShapeNormalizerTest extends TestCase
         );
         $this->assertSame(
             array_keys($shape['properties']),
-            ['id', 'jsonrpc', 'method', 'params'],
+            ['id', 'jsonrpc', 'result', 'error'],
             'Unexpected properties for response'
         );
         // Check properties type
