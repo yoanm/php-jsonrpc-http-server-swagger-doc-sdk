@@ -38,15 +38,12 @@ class TypeDocNormalizer
             $paramDocRequired
         ) = $this->appendObjectDoc($doc, $siblingsDoc, $paramDocRequired);
 
-        $format = ($doc instanceof StringDoc && null !== $doc->getFormat())
-            ? $doc->getFormat()
-            : null
-        ;
+        $format = ($doc instanceof StringDoc ? $doc->getFormat() : null);
 
         return $this->appendIfValueNotNull('description', $doc->getDescription())
             + ['type' => $this->schemaTypeNormalizer->normalize($doc)]
             + $this->appendIfValueNotNull('format', $format)
-            + ['x-nullable' => ($doc->isNullable() === true)]
+            + ['x-nullable' => $doc->isNullable()]
             + $paramDocRequired
             + $this->appendIfValueNotNull('default', $doc->getDefault())
             + $this->appendIfValueNotNull('example', $doc->getExample())
@@ -129,10 +126,61 @@ class TypeDocNormalizer
             $siblingDocList[$sibling->getName()] = $this->normalize($sibling);
         }
 
-        $paramDocRequired = $this->appendIfValueHaveSiblings('properties', $siblingDocList, $siblingsDoc);
+        $siblingsDoc = $this->appendIfValueHaveSiblings('properties', $siblingDocList, $siblingsDoc);
         $paramDocRequired = $this->appendIfValueHaveSiblings('required', $requiredSiblings, $paramDocRequired);
 
         return [$siblingsDoc, $paramDocRequired];
+    }
+
+    /**
+     * @param TypeDoc[] $siblingList
+     *
+     * @return string
+     */
+    protected function guessItemsType(array $siblingList)
+    {
+        $siblingsType = null;
+        foreach ($siblingList as $sibling) {
+            $newType = $this->schemaTypeNormalizer->normalize($sibling);
+            if (null === $siblingsType) {
+                $siblingsType = $newType;
+            } else {
+                // If contains different types => fallback to string
+                if ($siblingsType !== $newType) {
+                    $siblingsType = null;
+                    break;
+                }
+            }
+        }
+
+        // default string if sub item type not guessable
+        return $siblingsType ?? 'string';
+    }
+
+    /**
+     * @param NumberDoc $doc
+     * @param array     $paramDocMinMax
+     *
+     * @return array
+     */
+    protected function appendNumberMinMax(NumberDoc $doc, array $paramDocMinMax)
+    {
+        $paramDocMinMax = $this->appendIfValueNotNull('minimum', $doc->getMin(), $paramDocMinMax);
+        $paramDocMinMax = $this->appendIf(
+            ($doc->getMin() && false === $doc->isInclusiveMin()),
+            'exclusiveMinimum',
+            true,
+            $paramDocMinMax
+        );
+        $paramDocMinMax = $this->appendIfValueNotNull('maximum', $doc->getMax(), $paramDocMinMax);
+        $paramDocMinMax = $this->appendIf(
+            ($doc->getMax() && false === $doc->isInclusiveMax()),
+            'exclusiveMaximum',
+            true,
+            $paramDocMinMax
+        );
+
+        return $paramDocMinMax;
     }
 
     /**
@@ -174,56 +222,5 @@ class TypeDocNormalizer
         }
 
         return $doc;
-    }
-
-    /**
-     * @param array $siblingList
-     *
-     * @return string
-     */
-    protected function guessItemsType(array $siblingList)
-    {
-        $siblingsType = null;
-        foreach ($siblingList as $sibling) {
-            $newType = $this->schemaTypeNormalizer->normalize($sibling);
-            if (null === $siblingsType) {
-                $siblingsType = $newType;
-            } else {
-                // If contains different types => fallback to string
-                if ($siblingsType !== $newType) {
-                    $siblingsType = null;
-                    break;
-                }
-            }
-        }
-
-        // default string if sub item type not guessable
-        return $siblingsType ?? 'string';
-    }
-
-    /**
-     * @param NumberDoc $doc
-     * @param array     $paramDocMinMax
-     *
-     * @return array
-     */
-    private function appendNumberMinMax(NumberDoc $doc, array $paramDocMinMax)
-    {
-        $paramDocMinMax = $this->appendIfValueNotNull('minimum', $doc->getMin(), $paramDocMinMax);
-        $paramDocMinMax = $this->appendIf(
-            ($doc->getMin() && false === $doc->isInclusiveMin()),
-            'exclusiveMinimum',
-            true,
-            $paramDocMinMax
-        );
-        $paramDocMinMax = $this->appendIfValueNotNull('maximum', $doc->getMax(), $paramDocMinMax);
-        $paramDocMinMax = $this->appendIf(
-            ($doc->getMax() && false === $doc->isInclusiveMax()),
-            'exclusiveMaximum',
-            true,
-            $paramDocMinMax
-        );
-
-        return $paramDocMinMax;
     }
 }
