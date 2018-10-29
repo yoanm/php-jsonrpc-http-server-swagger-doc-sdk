@@ -84,12 +84,14 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         $globalErrorCodeList = [-2, -3]; // Append two times "-2" to check if result have no double
         $customMethodErrorCodeList1 = [-4, -5];
         $customMethodErrorCodeList2 = [-6, -7];
-        $expectedErrorCodeList = array_unique(
-            array_merge(
-                $serverErrorCodeList,
-                $globalErrorCodeList,
-                $customMethodErrorCodeList1,
-                $customMethodErrorCodeList2
+        $expectedErrorCodeList = array_values(
+            array_unique(
+                array_merge(
+                    $serverErrorCodeList,
+                    $globalErrorCodeList,
+                    $customMethodErrorCodeList1,
+                    $customMethodErrorCodeList2
+                )
             )
         );
         $expectedDefaultErrorSchema = [

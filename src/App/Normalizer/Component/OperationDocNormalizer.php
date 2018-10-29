@@ -135,7 +135,7 @@ STRING;
     private function formatErrorForDescription(ErrorDoc $errorDoc)
     {
         return sprintf(
-            '*%s* (**Models->%s**)',
+            '*%s* (**Definitions->%s**)',
             $errorDoc->getTitle(),
             $this->definitionRefResolver->getErrorDefinitionId(
                 $errorDoc,

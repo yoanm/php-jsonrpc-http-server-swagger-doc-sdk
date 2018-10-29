@@ -2,6 +2,7 @@
 namespace Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component;
 
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
+use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
 
 /**
@@ -34,19 +35,41 @@ class ResponseDocNormalizer
     public function normalize(MethodDoc $method)
     {
         return [
-            'allOf' => [
-                $this->shapeNormalizer->getResponseShapeDefinition(),
+            'allOf' => array_merge(
                 [
-                    'type' => 'object',
-                    'properties' => ['result' => $this->getMethodResultArrayDoc($method)],
-                ],
-                [
-                    'type' => 'object',
-                    'properties' => [
-                        'error' => ['$ref' => $this->definitionRefResolver->getDefinitionRef('Default-Error')]
+                    $this->shapeNormalizer->getResponseShapeDefinition(),
+                    [
+                        'type' => 'object',
+                        'properties' => ['result' => $this->getMethodResultArrayDoc($method)],
                     ],
                 ],
-            ],
+                array_map(
+                    function ($errorIdentifier) {
+                        return [
+                            'type' => 'object',
+                            'properties' => [
+                                'error' => [
+                                    '$ref' => $this->definitionRefResolver->getDefinitionRef(
+                                        $this->definitionRefResolver->getErrorDefinitionId(
+                                            new ErrorDoc('', 0, null, null, $errorIdentifier),
+                                            DefinitionRefResolver::CUSTOM_ERROR_DEFINITION_TYPE
+                                        )
+                                    )
+                                ]
+                            ],
+                        ];
+                    },
+                    $method->getGlobalErrorRefList()
+                ),
+                [
+                    [
+                        'type' => 'object',
+                        'properties' => [
+                            'error' => ['$ref' => $this->definitionRefResolver->getDefinitionRef('Default-Error')]
+                        ],
+                    ]
+                ]
+            )
         ];
     }
 
