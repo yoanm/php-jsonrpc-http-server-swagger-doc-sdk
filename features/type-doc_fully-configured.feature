@@ -1,4 +1,4 @@
-Feature: TypeDoc normalization (by using error data doc)
+Feature: TypeDoc normalization
 
   Scenario: Fully configured type normalization
     Given I have an HttpServerDoc

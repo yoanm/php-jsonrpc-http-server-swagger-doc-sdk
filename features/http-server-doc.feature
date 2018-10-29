@@ -43,7 +43,6 @@ Feature: HttpServerDocNormalizer
     }
     """
 
-    @yo
   Scenario: Fully described Http server normalization
     Given I have an HttpServerDoc with following calls:
     """
