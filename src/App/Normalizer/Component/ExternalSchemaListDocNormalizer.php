@@ -178,7 +178,7 @@ class ExternalSchemaListDocNormalizer
         );
 
         if (count($codeList) > 0) {
-            $propertyList['code']['enum'] = $codeList;
+            $propertyList['code']['enum'] = array_values($codeList);
         }
 
         return [

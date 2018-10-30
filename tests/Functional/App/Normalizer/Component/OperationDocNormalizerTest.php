@@ -153,8 +153,8 @@ STRING;
                 'expected' => [
                     'summary' => '"my-method-name" json-rpc method',
                     'description' => 'Could throw custom errors : '
-                        .$indentString.'*Custom1* (**Models->Error-Custom11**)'
-                        .$indentString.'*Custom2* (**Models->Error-Custom22**)',
+                        .$indentString.'*Custom1* (**Definitions->Error-Custom11**)'
+                        .$indentString.'*Custom2* (**Definitions->Error-Custom22**)',
                     'operationId' => 'MethodId',
                     'consumes' => ['application/json'],
                     'produces' => ['application/json'],
@@ -185,8 +185,8 @@ STRING;
                     'summary' => '"my-method-name" json-rpc method',
                     'description' => 'method-description'."\n"
                         .'Could throw custom errors : '
-                        .$indentString.'*Custom1* (**Models->Error-Custom11**)'
-                        .$indentString.'*Custom2* (**Models->Error-Custom22**)',
+                        .$indentString.'*Custom1* (**Definitions->Error-Custom11**)'
+                        .$indentString.'*Custom2* (**Definitions->Error-Custom22**)',
                     'tags' => ['tag1', 'tag2'],
                     'operationId' => 'MethodId',
                     'consumes' => ['application/json'],

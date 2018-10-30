@@ -119,11 +119,11 @@ class DocNormalizerTest extends TestCase
             ],
             'Doc with basePath' => [
                 'errorDoc' => (new HttpServerDoc())
-                    ->setBasePath('my-basePath')
+                    ->setBasePath('/my-basePath')
                 ,
                 'expected' => [
                     'swagger' => '2.0',
-                    'basePath' => 'my-basePath',
+                    'basePath' => '/my-basePath',
                     'definitions' => self::DEFAULT_EXTERNAL_LIST_DOC,
                 ],
             ],
@@ -169,7 +169,7 @@ class DocNormalizerTest extends TestCase
             'Fully configured Doc' => [
                 'errorDoc' => (new HttpServerDoc())
                     ->setHost('my-host')
-                    ->setBasePath('my-basePath')
+                    ->setBasePath('/my-basePath')
                     ->setSchemeList(['my-scheme'])
                     ->setEndpoint('/my-endpoint')
                     ->setName('my-name')
@@ -186,7 +186,7 @@ class DocNormalizerTest extends TestCase
                         'version' => 'my-version',
                     ],
                     'host' => 'my-host',
-                    'basePath' => 'my-basePath',
+                    'basePath' => '/my-basePath',
                     'schemes' => ['my-scheme'],
                     'tags' => [
                         ['name' => 'tag1'],
