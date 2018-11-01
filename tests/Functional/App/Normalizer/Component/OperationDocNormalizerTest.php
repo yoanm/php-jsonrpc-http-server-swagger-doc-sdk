@@ -2,7 +2,6 @@
 namespace Tests\Functional\App\Normalizer\Component;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\OperationDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\RequestDocNormalizer;
@@ -10,7 +9,6 @@ use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ResponseDocNormal
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
 use Yoanm\JsonRpcServerDoc\Domain\Model\ErrorDoc;
 use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
-use Yoanm\JsonRpcServerDoc\Domain\Model\Type as TypeDocNs;
 
 /**
  * @covers \Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\OperationDocNormalizer
@@ -89,7 +87,7 @@ STRING;
                         ],
                         'responses' => [
                             '200' => [
-                                'description' => 'JsonRpc response',
+                                'description' => 'JSON-RPC response',
                                 'schema' => self::DEFAULT_RESPONSE_DEFINITION
                             ]
                         ]
@@ -115,7 +113,7 @@ STRING;
                     ],
                     'responses' => [
                         '200' => [
-                            'description' => 'JsonRpc response',
+                            'description' => 'JSON-RPC response',
                             'schema' => self::DEFAULT_RESPONSE_DEFINITION
                         ]
                     ]
@@ -140,7 +138,7 @@ STRING;
                     ],
                     'responses' => [
                         '200' => [
-                            'description' => 'JsonRpc response',
+                            'description' => 'JSON-RPC response',
                             'schema' => self::DEFAULT_RESPONSE_DEFINITION
                         ]
                     ]
@@ -168,7 +166,7 @@ STRING;
                     ],
                     'responses' => [
                         '200' => [
-                            'description' => 'JsonRpc response',
+                            'description' => 'JSON-RPC response',
                             'schema' => self::DEFAULT_RESPONSE_DEFINITION
                         ]
                     ]
@@ -201,7 +199,7 @@ STRING;
                     ],
                     'responses' => [
                         '200' => [
-                            'description' => 'JsonRpc response',
+                            'description' => 'JSON-RPC response',
                             'schema' => self::DEFAULT_RESPONSE_DEFINITION
                         ]
                     ]

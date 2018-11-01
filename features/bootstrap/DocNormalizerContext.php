@@ -221,16 +221,15 @@ class DocNormalizerContext extends AbstractContext
         $shapeNormalizer = new ShapeNormalizer();
         $schemaTypeNormalizer = new SchemaTypeNormalizer();
         $definitionRefResolver = new DefinitionRefResolver();
+        $typeDocNormalizer = new TypeDocNormalizer(
+            $schemaTypeNormalizer
+        );
         $normalizer = new DocNormalizer(
             new ExternalSchemaListDocNormalizer(
                 $definitionRefResolver,
-                new TypeDocNormalizer(
-                    $schemaTypeNormalizer
-                ),
+                $typeDocNormalizer,
                 new ErrorDocNormalizer(
-                    new TypeDocNormalizer(
-                        $schemaTypeNormalizer
-                    ),
+                    $typeDocNormalizer,
                     $shapeNormalizer
                 ),
                 $shapeNormalizer
@@ -256,7 +255,6 @@ class DocNormalizerContext extends AbstractContext
      */
     public function thenIShouldHaveFollowingNormalizedDoc(PyStringNode $data)
     {
-        print_r(json_encode($this->lastNormalizedOutput)."\n");
         Assert::assertSame(
             $this->jsonDecode($data->getRaw()),
             $this->lastNormalizedOutput
@@ -280,8 +278,6 @@ class DocNormalizerContext extends AbstractContext
     public function thenNormalizedDefinitionNamedShouldBeTheFollowing($definitionName, PyStringNode $data)
     {
         $this->thenIShouldHaveDefinitionNamed($definitionName);
-
-        print_r(json_encode($this->lastNormalizedOutput));
 
         Assert::assertSame(
             $this->jsonDecode($data->getRaw()),
@@ -341,7 +337,6 @@ class DocNormalizerContext extends AbstractContext
         $this->thenIShouldHaveDefinitionNamed(self::DUMMY_ERROR_KEY_FOR_TYPEDOC);
         $dummyError = $this->lastNormalizedOutput[self::DEFINITIONS_KEY][self::DUMMY_ERROR_KEY_FOR_TYPEDOC];
         $dummyErrorShape = $dummyError['allOf'][1];
-        var_dump($dummyErrorShape);
 
         if (true === $isRequired) {
             Assert::assertContains('data', $dummyErrorShape['required']);
@@ -405,8 +400,6 @@ class DocNormalizerContext extends AbstractContext
         $operation = $this->extractPath($httpMethod, $pathName);
         $decodedExpected = $this->jsonDecode($data->getRaw());
 
-        print_r(json_encode($operation)."\n");
-
         foreach ($decodedExpected as $expectedKey => $expectedContent) {
             Assert::assertArrayHasKey($expectedKey, $operation);
             Assert::assertSame($expectedContent, $operation[$expectedKey]);
@@ -424,8 +417,6 @@ class DocNormalizerContext extends AbstractContext
         $operationParameters = $operation['parameters'][0]['schema']['allOf'];
         $decodedExpected = $this->jsonDecode($data->getRaw());
 
-        print_r(json_encode($operation)."\n");
-
         Assert::assertContains($decodedExpected, $operationParameters);
     }
 
@@ -442,8 +433,6 @@ class DocNormalizerContext extends AbstractContext
         $operation = $this->extractPath($httpMethod, $pathName);
         $operationResponseSchemaList = $operation['responses']['200']['schema']['allOf'];
         $decodedExpected = $this->jsonDecode($data->getRaw());
-
-        print_r(json_encode($this->lastNormalizedOutput));
 
         Assert::assertContains($decodedExpected, $operationResponseSchemaList);
     }
