@@ -64,7 +64,7 @@ class OperationDocNormalizer
                 ],
                 'responses' => [
                     '200' => [
-                        'description' => 'JsonRpc response',
+                        'description' => 'JSON-RPC response',
                         'schema' => $this->responseDocNormalizer->normalize($method),
                     ]
                 ]

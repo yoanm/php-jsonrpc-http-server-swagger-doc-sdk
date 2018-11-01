@@ -328,7 +328,7 @@ Feature: MethodDocNormalizer
             ],
             "responses": {
               "200": {
-                "description": "JsonRpc response",
+                "description": "JSON-RPC response",
                 "schema": {
                   "allOf": [
                     {
