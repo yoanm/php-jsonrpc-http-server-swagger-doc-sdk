@@ -34,6 +34,8 @@ class SchemaTypeNormalizer
      * @param TypeDoc $doc
      *
      * @return mixed|string
+     *
+     * @throws \ReflectionException
      */
     public function normalize(TypeDoc $doc)
     {

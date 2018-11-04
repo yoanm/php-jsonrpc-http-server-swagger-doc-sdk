@@ -41,7 +41,10 @@ class ExternalSchemaListDocNormalizer
 
     /**
      * @param ServerDoc $doc
+     *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     public function normalize(ServerDoc $doc)
     {
@@ -57,6 +60,8 @@ class ExternalSchemaListDocNormalizer
      * @param ServerDoc $doc
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function getMethodsExternalSchemaList(ServerDoc $doc)
     {
@@ -73,6 +78,8 @@ class ExternalSchemaListDocNormalizer
      * @param ServerDoc $doc
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function getMethodErrorsExternalSchemaList(ServerDoc $doc)
     {
@@ -95,6 +102,8 @@ class ExternalSchemaListDocNormalizer
      * @param ServerDoc $doc
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function getServerErrorsExtraSchemaList(ServerDoc $doc)
     {
@@ -114,6 +123,8 @@ class ExternalSchemaListDocNormalizer
      * @param MethodDoc $method
      *
      * @return array[]
+     *
+     * @throws \ReflectionException
      */
     protected function getMethodExternalSchemaList(MethodDoc $method) : array
     {
@@ -195,10 +206,12 @@ class ExternalSchemaListDocNormalizer
     }
 
     /**
-     * @param array  $errorDocList
-     * @param string $definitionType
+     * @param array $errorDocList
+     * @param       $definitionType
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     private function normalizeErrorList(array $errorDocList, $definitionType)
     {
@@ -218,6 +231,8 @@ class ExternalSchemaListDocNormalizer
      * @param array        $list
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function appendAndNormalizeIfNotNull(string $key, $value, array $list = [])
     {
