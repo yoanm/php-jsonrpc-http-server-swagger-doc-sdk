@@ -35,6 +35,8 @@ class DocNormalizer
      * @param HttpServerDoc $doc
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     public function normalize(HttpServerDoc $doc)
     {
@@ -120,6 +122,8 @@ class DocNormalizer
      * @param HttpServerDoc $doc
      *
      * @return array
+     *
+     * @throws \ReflectionException
      */
     protected function externalSchemaListArray(HttpServerDoc $doc)
     {
