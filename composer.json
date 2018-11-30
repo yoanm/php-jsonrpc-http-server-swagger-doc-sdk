@@ -24,9 +24,14 @@
       "Tests\\Functional\\BehatContext\\": "features/bootstrap"
     }
   },
+  "suggest": {
+    "yoanm/symfony-jsonrpc-http-server-swagger-doc": "Symfony bundle for easy JSON-RPC server Swagger 2.0 documentation",
+    "yoanm/symfony-jsonrpc-http-server-doc": "Symfony bundle for easy JSON-RPC server documentation",
+    "yoanm/symfony-jsonrpc-http-server": "Symfony Bundle to convert an HTTP json-rpc request into HTTP json-rpc response"
+  },
   "require": {
     "php": ">=7.1",
-    "yoanm/jsonrpc-server-doc-sdk": "dev-release/1.0.0"
+    "yoanm/jsonrpc-server-doc-sdk": "dev-release/0.1.0"
   },
   "require-dev": {
     "ext-json": "*",
