@@ -219,10 +219,9 @@ class DocNormalizerContext extends AbstractContext
     public function whenINormalizeServerDoc()
     {
         $shapeNormalizer = new ShapeNormalizer();
-        $schemaTypeNormalizer = new SchemaTypeNormalizer();
         $definitionRefResolver = new DefinitionRefResolver();
         $typeDocNormalizer = new TypeDocNormalizer(
-            $schemaTypeNormalizer
+            new SchemaTypeNormalizer()
         );
         $normalizer = new DocNormalizer(
             new ExternalSchemaListDocNormalizer(

@@ -9,7 +9,66 @@
 
 SDK to generate Http JSON-RPC server documentation for Swagger v2.0
 
+See [`yoanm/symfony-jsonrpc-http-server-swagger-doc`](https://github.com/yoanm/symfony-jsonrpc-http-server-swagger-doc) for automatic dependency injection.
+
 ## How to use
+
+Create the normalizer : 
+```php
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ErrorDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ExternalSchemaListDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\OperationDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\RequestDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ResponseDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\SchemaTypeNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ShapeNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\TypeDocNormalizer;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Resolver\DefinitionRefResolver;
+use Yoanm\JsonRpcHttpServerSwaggerDoc\Infra\Normalizer\DocNormalizer;
+
+$shapeNormalizer = new ShapeNormalizer();
+$definitionRefResolver = new DefinitionRefResolver();
+$typeDocNormalizer = new TypeDocNormalizer(
+    new SchemaTypeNormalizer()
+);
+
+$normalizer = new DocNormalizer(
+    new ExternalSchemaListDocNormalizer(
+        $definitionRefResolver,
+        $typeDocNormalizer,
+        new ErrorDocNormalizer(
+            $typeDocNormalizer,
+            $shapeNormalizer
+        ),
+        $shapeNormalizer
+    ),
+    new OperationDocNormalizer(
+        $definitionRefResolver,
+        new RequestDocNormalizer(
+            $definitionRefResolver,
+            $shapeNormalizer
+        ),
+        new ResponseDocNormalizer(
+            $definitionRefResolver,
+            $shapeNormalizer
+        )
+    )
+);
+```
+
+Then you can convert `ServerDoc` or `HttpServerDoc` by doing : 
+```php
+use Yoanm\JsonRpcServerDoc\Domain\Model\ServerDoc;
+
+$serverDoc = new ServerDoc();
+// Configure server doc
+...
+// Add methods documentation
+...
+// Then normalize
+/** @var array $swaggerDoc */
+$swaggerDoc = $normalizer->normalize($serverDoc);
+```
 
 ## Contributing
 See [contributing note](./CONTRIBUTING.md)
