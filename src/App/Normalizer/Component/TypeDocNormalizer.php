@@ -30,11 +30,11 @@ class TypeDocNormalizer
     /**
      * @param TypeDoc $doc
      *
-     * @return array|mixed
+     * @return array
      *
      * @throws \ReflectionException
      */
-    public function normalize(TypeDoc $doc)
+    public function normalize(TypeDoc $doc) : array
     {
         $siblingsDoc = $paramDocRequired = [];
 
@@ -64,7 +64,7 @@ class TypeDocNormalizer
      *
      * @return array
      */
-    protected function getMinMaxDoc(TypeDoc $doc)
+    protected function getMinMaxDoc(TypeDoc $doc) : array
     {
         $paramDocMinMax = [];
         if ($doc instanceof StringDoc) {
@@ -93,7 +93,7 @@ class TypeDocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function appendArrayDoc(TypeDoc $doc, array $siblingsDoc)
+    protected function appendArrayDoc(TypeDoc $doc, array $siblingsDoc) : array
     {
         // CollectionDoc should be managed as ArrayDoc
         if (!$doc instanceof ArrayDoc && get_class($doc) !== CollectionDoc::class) {
@@ -117,7 +117,7 @@ class TypeDocNormalizer
      *
      * @return array
      */
-    protected function appendObjectDoc(TypeDoc $doc, array $siblingsDoc, array $paramDocRequired)
+    protected function appendObjectDoc(TypeDoc $doc, array $siblingsDoc, array $paramDocRequired) : array
     {
         if (!$doc instanceof ObjectDoc) {
             return [$siblingsDoc, $paramDocRequired];
@@ -162,7 +162,7 @@ class TypeDocNormalizer
      *
      * @return string
      */
-    protected function guessItemsType(array $siblingList)
+    protected function guessItemsType(array $siblingList) : string
     {
         $self = $this;
         $uniqueTypeList = array_unique(
@@ -188,7 +188,7 @@ class TypeDocNormalizer
      *
      * @return array
      */
-    protected function appendNumberMinMax(NumberDoc $doc, array $paramDocMinMax)
+    protected function appendNumberMinMax(NumberDoc $doc, array $paramDocMinMax) : array
     {
         $paramDocMinMax = $this->appendIfValueNotNull('minimum', $doc->getMin(), $paramDocMinMax);
         $paramDocMinMax = $this->appendIf(

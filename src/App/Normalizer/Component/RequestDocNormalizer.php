@@ -27,9 +27,11 @@ class RequestDocNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param MethodDoc $method
+     *
+     * @return array
      */
-    public function normalize(MethodDoc $method)
+    public function normalize(MethodDoc $method) : array
     {
         $requestSchema = ['allOf' => [$this->shapeNormalizer->getRequestShapeDefinition()]];
         // Append custom if params required

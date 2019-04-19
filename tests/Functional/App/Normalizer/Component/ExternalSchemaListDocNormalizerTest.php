@@ -107,27 +107,67 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
                 ],
             ],
         ];
+        $serverErrorCodeList = [
+            new ErrorDoc('', $serverErrorCodeList[0]),
+            new ErrorDoc('', $serverErrorCodeList[1]),
+        ];
+        $globalErrorCodeList = [
+            new ErrorDoc('', $globalErrorCodeList[0]),
+            new ErrorDoc('', $globalErrorCodeList[1]),
+        ];
+        $customMethodErrorCodeList1 = [
+            new ErrorDoc('', $customMethodErrorCodeList1[0]),
+            new ErrorDoc('', $customMethodErrorCodeList1[1]),
+        ];
+        $customMethodErrorCodeList2 = [
+            new ErrorDoc('', $customMethodErrorCodeList2[0]),
+            new ErrorDoc('', $customMethodErrorCodeList2[1]),
+        ];
         $doc = new ServerDoc();
-        $doc->addServerError(new ErrorDoc('', $serverErrorCodeList[0]))
-            ->addServerError(new ErrorDoc('', $serverErrorCodeList[1]))
+        $doc->addServerError($serverErrorCodeList[0])
+            ->addServerError($serverErrorCodeList[1])
         ;
-        $doc->addGlobalError(new ErrorDoc('', $globalErrorCodeList[0]))
-            ->addGlobalError(new ErrorDoc('', $globalErrorCodeList[1]))
+        $doc->addGlobalError($globalErrorCodeList[0])
+            ->addGlobalError($globalErrorCodeList[1])
         ;
         $doc->addMethod(
             (new MethodDoc('method-a'))
-                ->addCustomError(new ErrorDoc('', $customMethodErrorCodeList1[0]))
-                ->addCustomError(new ErrorDoc('', $customMethodErrorCodeList1[1]))
+                ->addCustomError($customMethodErrorCodeList1[0])
+                ->addCustomError($customMethodErrorCodeList1[1])
         )
             ->addMethod(
                 (new MethodDoc('method-b'))
-                    ->addCustomError(new ErrorDoc('', $customMethodErrorCodeList2[0]))
-                    ->addCustomError(new ErrorDoc('', $customMethodErrorCodeList2[1]))
+                    ->addCustomError($customMethodErrorCodeList2[0])
+                    ->addCustomError($customMethodErrorCodeList2[1])
             )
         ;
 
         $this->shapeNormalizer->getErrorShapeDefinition()
             ->willReturn($errorShapeDefinition)->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($serverErrorCodeList[0])
+            ->willReturn(['serverErrorCodeList_0'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($serverErrorCodeList[1])
+            ->willReturn(['serverErrorCodeList_1'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($globalErrorCodeList[0])
+            ->willReturn(['globalErrorCodeList_0'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($globalErrorCodeList[1])
+            ->willReturn(['globalErrorCodeList_1'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($customMethodErrorCodeList1[0])
+            ->willReturn(['customMethodErrorCodeList_1_0'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($customMethodErrorCodeList1[1])
+            ->willReturn(['customMethodErrorCodeList_1_1'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($customMethodErrorCodeList2[0])
+            ->willReturn(['customMethodErrorCodeList_2_0'])->shouldBeCalled()
+        ;
+        $this->errorDocNormalizer->normalize($customMethodErrorCodeList2[1])
+            ->willReturn(['customMethodErrorCodeList_2_1'])->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);
@@ -143,6 +183,7 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
     {
         $normalizedServerError1 = ['normalized-server-error1'];
         $normalizedServerError2 = ['normalized-server-error2'];
+        $errorShapeDefinition = ['error-shape-definition'];
         $serverError1 = new ErrorDoc('firstError', 1);
         $serverError2 = new ErrorDoc('secondError', 2);
         $doc = new ServerDoc();
@@ -155,6 +196,9 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         ;
         $this->errorDocNormalizer->normalize($serverError2)
             ->willReturn($normalizedServerError2)->shouldBeCalled()
+        ;
+        $this->shapeNormalizer->getErrorShapeDefinition()
+            ->willReturn($errorShapeDefinition)->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);
@@ -173,6 +217,7 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
     {
         $normalizedGlobalError1 = ['normalized-global-error1'];
         $normalizedGlobalError2 = ['normalized-global-error2'];
+        $errorShapeDefinition = ['error-shape-definition'];
         $globalError1 = new ErrorDoc('firstError', 1);
         $globalError2 = new ErrorDoc('secondError', 2);
         $doc = new ServerDoc();
@@ -185,6 +230,9 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         ;
         $this->errorDocNormalizer->normalize($globalError2)
             ->willReturn($normalizedGlobalError2)->shouldBeCalled()
+        ;
+        $this->shapeNormalizer->getErrorShapeDefinition()
+            ->willReturn($errorShapeDefinition)->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);
@@ -203,6 +251,7 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
     {
         $normalizedCustomMethodError1 = ['normalized-customMethod-error1'];
         $normalizedCustomMethodError2 = ['normalized-customMethod-error2'];
+        $errorShapeDefinition = ['error-shape-definition'];
         $customMethodError1 = new ErrorDoc('firstCustomError', 1);
         $customMethodError2 = new ErrorDoc('secondCustomError', 2);
         $doc = new ServerDoc();
@@ -215,6 +264,9 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         ;
         $this->errorDocNormalizer->normalize($customMethodError2)
             ->willReturn($normalizedCustomMethodError2)->shouldBeCalled()
+        ;
+        $this->shapeNormalizer->getErrorShapeDefinition()
+            ->willReturn($errorShapeDefinition)->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);
@@ -233,6 +285,7 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
     {
         $normalizedResult1 = ['normalized-result1'];
         $normalizedResult2 = ['normalized-result2'];
+        $errorShapeDefinition = ['error-shape-definition'];
         $result1 = new TypeDocNS\StringDoc();
         $result2 = new TypeDocNS\BooleanDoc();
         $doc = new ServerDoc();
@@ -246,6 +299,9 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         ;
         $this->typeDocNormalizer->normalize($result2)
             ->willReturn($normalizedResult2)->shouldBeCalled()
+        ;
+        $this->shapeNormalizer->getErrorShapeDefinition()
+            ->willReturn($errorShapeDefinition)->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);
@@ -264,6 +320,7 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
     {
         $normalizedParams1 = ['normalized-params1'];
         $normalizedParams2 = ['normalized-params2'];
+        $errorShapeDefinition = ['error-shape-definition'];
         $params1 = new TypeDocNS\ObjectDoc();
         $params2 = new TypeDocNS\ArrayDoc();
         $doc = new ServerDoc();
@@ -277,6 +334,9 @@ class ExternalSchemaListDocNormalizerTest extends TestCase
         ;
         $this->typeDocNormalizer->normalize($params2)
             ->willReturn($normalizedParams2)->shouldBeCalled()
+        ;
+        $this->shapeNormalizer->getErrorShapeDefinition()
+            ->willReturn($errorShapeDefinition)->shouldBeCalled()
         ;
 
         $normalizedDoc = $this->normalizer->normalize($doc);

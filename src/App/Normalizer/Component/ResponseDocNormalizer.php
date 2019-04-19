@@ -32,7 +32,7 @@ class ResponseDocNormalizer
      *
      * @return array
      */
-    public function normalize(MethodDoc $method)
+    public function normalize(MethodDoc $method) : array
     {
         return [
             'allOf' => array_merge(
@@ -78,7 +78,7 @@ class ResponseDocNormalizer
      *
      * @return array
      */
-    protected function getMethodResultArrayDoc(MethodDoc $method)
+    protected function getMethodResultArrayDoc(MethodDoc $method) : array
     {
         if (null !== $method->getResultDoc()) {
             return [

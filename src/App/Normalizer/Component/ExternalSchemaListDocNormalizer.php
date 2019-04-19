@@ -46,7 +46,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    public function normalize(ServerDoc $doc)
+    public function normalize(ServerDoc $doc) : array
     {
         return array_merge(
             $this->getMethodsExternalSchemaList($doc),
@@ -63,7 +63,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function getMethodsExternalSchemaList(ServerDoc $doc)
+    protected function getMethodsExternalSchemaList(ServerDoc $doc) : array
     {
         $list = [];
         foreach ($doc->getMethodList() as $method) {
@@ -81,7 +81,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function getMethodErrorsExternalSchemaList(ServerDoc $doc)
+    protected function getMethodErrorsExternalSchemaList(ServerDoc $doc) : array
     {
         $list = [];
         foreach ($doc->getMethodList() as $method) {
@@ -105,7 +105,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function getServerErrorsExtraSchemaList(ServerDoc $doc)
+    protected function getServerErrorsExtraSchemaList(ServerDoc $doc) : array
     {
         return array_merge(
             $this->normalizeErrorList(
@@ -154,9 +154,10 @@ class ExternalSchemaListDocNormalizer
 
     /**
      * @param ServerDoc $doc
+     *
      * @return array
      */
-    protected function getDefaultSchemaList(ServerDoc $doc)
+    protected function getDefaultSchemaList(ServerDoc $doc) : array
     {
         $propertyList = [
             'code' => [
@@ -213,7 +214,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    private function normalizeErrorList(array $errorDocList, $definitionType)
+    private function normalizeErrorList(array $errorDocList, $definitionType) : array
     {
         $list = [];
         foreach ($errorDocList as $errorDoc) {
@@ -234,7 +235,7 @@ class ExternalSchemaListDocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function appendAndNormalizeIfNotNull(string $key, $value, array $list = [])
+    protected function appendAndNormalizeIfNotNull(string $key, $value, array $list = []) : array
     {
         if (null !== $value) {
             $list[$key] = $this->typeDocNormalizer->normalize($value);

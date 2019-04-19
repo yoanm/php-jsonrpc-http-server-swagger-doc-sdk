@@ -74,9 +74,10 @@ class OperationDocNormalizer
 
     /**
      * @param MethodDoc $method
+     *
      * @return array
      */
-    protected function getDescriptionDoc(MethodDoc $method)
+    protected function getDescriptionDoc(MethodDoc $method) : array
     {
         $docDescription = [];
         if (null !== $method->getDescription()) {
@@ -104,7 +105,7 @@ class OperationDocNormalizer
      *
      * @return string|null
      */
-    private function getResponseDescription(MethodDoc $method)
+    private function getResponseDescription(MethodDoc $method) : ?string
     {
         if (count($method->getCustomErrorList())) {
             $self = $this;
@@ -132,7 +133,12 @@ STRING;
         return null;
     }
 
-    private function formatErrorForDescription(ErrorDoc $errorDoc)
+    /**
+     * @param ErrorDoc $errorDoc
+     *
+     * @return string
+     */
+    private function formatErrorForDescription(ErrorDoc $errorDoc) : string
     {
         return sprintf(
             '*%s* (**Definitions->%s**)',
