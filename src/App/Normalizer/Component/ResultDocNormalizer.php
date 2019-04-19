@@ -25,7 +25,7 @@ class ResultDocNormalizer
      *
      * @return array
      */
-    public function normalize(MethodDoc $method)
+    public function normalize(MethodDoc $method) : array
     {
         if (null !== $method->getResultDoc()) {
             return [

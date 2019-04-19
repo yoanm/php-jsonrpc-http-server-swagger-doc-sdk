@@ -38,7 +38,7 @@ class DocNormalizer
      *
      * @throws \ReflectionException
      */
-    public function normalize(HttpServerDoc $doc)
+    public function normalize(HttpServerDoc $doc) : array
     {
         return [
                 'swagger' => '2.0',
@@ -52,9 +52,11 @@ class DocNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param HttpServerDoc $doc
+     *
+     * @return array
      */
-    protected function infoArray(HttpServerDoc $doc)
+    protected function infoArray(HttpServerDoc $doc) : array
     {
         $infoArray = [];
         $infoArray = $this->appendIfValueNotNull('title', $doc->getName(), $infoArray);
@@ -64,9 +66,11 @@ class DocNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param HttpServerDoc $doc
+     *
+     * @return array
      */
-    protected function serverArray(HttpServerDoc $doc)
+    protected function serverArray(HttpServerDoc $doc) : array
     {
         $docArray = [];
         $docArray = $this->appendIfValueNotNull('host', $doc->getHost(), $docArray);
@@ -77,9 +81,11 @@ class DocNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param HttpServerDoc $doc
+     *
+     * @return array
      */
-    protected function tagsArray(HttpServerDoc $doc)
+    protected function tagsArray(HttpServerDoc $doc) : array
     {
         $self = $this;
 
@@ -95,9 +101,11 @@ class DocNormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param HttpServerDoc $doc
+     *
+     * @return array
      */
-    protected function pathsArray(HttpServerDoc $doc)
+    protected function pathsArray(HttpServerDoc $doc) : array
     {
         $paths = [];
         foreach ($doc->getMethodList() as $method) {
@@ -125,7 +133,7 @@ class DocNormalizer
      *
      * @throws \ReflectionException
      */
-    protected function externalSchemaListArray(HttpServerDoc $doc)
+    protected function externalSchemaListArray(HttpServerDoc $doc) : array
     {
         return $this->appendIfValueHaveSiblings(
             'definitions',
@@ -138,7 +146,7 @@ class DocNormalizer
      *
      * @return array
      */
-    private function convertToTagDoc(TagDoc $tag)
+    private function convertToTagDoc(TagDoc $tag) : array
     {
         $tagArray = ['name' => $tag->getName()];
 

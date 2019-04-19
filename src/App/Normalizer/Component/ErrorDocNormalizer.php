@@ -32,7 +32,7 @@ class ErrorDocNormalizer
      *
      * @throws \ReflectionException
      */
-    public function normalize(ErrorDoc $errorDoc)
+    public function normalize(ErrorDoc $errorDoc) : array
     {
         $requiredDoc = ['required' => ['code']];
         $properties = [
