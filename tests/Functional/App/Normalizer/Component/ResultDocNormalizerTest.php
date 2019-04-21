@@ -20,7 +20,7 @@ class ResultDocNormalizerTest extends TestCase
     /** @var ResultDocNormalizer */
     private $normalizer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->definitionRefResolver = $this->prophesize(DefinitionRefResolver::class);
 

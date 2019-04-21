@@ -25,7 +25,7 @@ class ResponseDocNormalizerTest extends TestCase
     /** @var ResponseDocNormalizer */
     private $normalizer;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->definitionRefResolver = $this->prophesize(DefinitionRefResolver::class);
         $this->shapeNormalizer = $this->prophesize(ShapeNormalizer::class);
