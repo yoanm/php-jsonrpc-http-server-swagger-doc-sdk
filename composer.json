@@ -33,7 +33,7 @@
   },
   "require": {
     "php": "^8.0",
-    "yoanm/jsonrpc-server-doc-sdk": "^0.3"
+    "yoanm/jsonrpc-server-doc-sdk": "^1.0"
   },
   "require-dev": {
     "ext-json": "*",
