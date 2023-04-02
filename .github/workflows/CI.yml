@@ -78,7 +78,8 @@ jobs:
 
       - name: Build
         run: |
-          make build
+          composer update ${{ env.COMPOSER_OPTIONS }} ${{ matrix.composer-flag }} \
+          && make build
 
       - name: Tests
         run: make test-unit && make test-functional
@@ -212,7 +213,8 @@ jobs:
 
       - name: Build
         run: |
-          make build
+          composer update ${{ env.COMPOSER_OPTIONS }} \
+          && make build
 
       - name: Test
         run: make test-unit && make test-functional
