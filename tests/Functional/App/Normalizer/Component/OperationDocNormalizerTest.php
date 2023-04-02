@@ -2,6 +2,7 @@
 namespace Tests\Functional\App\Normalizer\Component;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\OperationDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\RequestDocNormalizer;
@@ -17,6 +18,8 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\MethodDoc;
  */
 class OperationDocNormalizerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var RequestDocNormalizer|ObjectProphecy */
     private $requestDocTransformer;
     /** @var ResponseDocNormalizer|ObjectProphecy */

@@ -3,6 +3,7 @@ namespace Tests\Functional\App\Normalizer\Component;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ResponseDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ShapeNormalizer;
@@ -18,6 +19,8 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\Type as TypeDocNS;
  */
 class ResponseDocNormalizerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var DefinitionRefResolver|ObjectProphecy */
     private $definitionRefResolver;
     /** @var ShapeNormalizer|ObjectProphecy */
