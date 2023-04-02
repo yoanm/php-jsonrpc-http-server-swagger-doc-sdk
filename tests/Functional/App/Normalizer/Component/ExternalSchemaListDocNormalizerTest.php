@@ -2,6 +2,7 @@
 namespace Tests\Functional\App\Normalizer\Component;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ErrorDocNormalizer;
 use Yoanm\JsonRpcHttpServerSwaggerDoc\App\Normalizer\Component\ExternalSchemaListDocNormalizer;
@@ -20,6 +21,8 @@ use Yoanm\JsonRpcServerDoc\Domain\Model\Type as TypeDocNS;
  */
 class ExternalSchemaListDocNormalizerTest extends TestCase
 {
+    use ProphecyTrait;
+
     /** @var TypeDocNormalizer|ObjectProphecy */
     private $typeDocNormalizer;
     /** @var ErrorDocNormalizer|ObjectProphecy */
