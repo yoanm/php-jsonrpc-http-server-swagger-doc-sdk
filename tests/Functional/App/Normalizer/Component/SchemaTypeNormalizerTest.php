@@ -39,10 +39,10 @@ class SchemaTypeNormalizerTest extends TestCase
         );
     }
 
-    public function testShouldFallbackToString()
+    public function testShouldFallbackToUnknownType()
     {
         $this->assertSame(
-            'string',
+            null,
             $this->normalizer->normalize(new NotManagedTypeDoc())
         );
     }
@@ -53,6 +53,10 @@ class SchemaTypeNormalizerTest extends TestCase
     public function provideManagedTypeDocClassList()
     {
         return [
+            'unknown type' => [
+                'typeDocClass' => new TypeDocNS\TypeDoc(),
+                'expected' => null,
+            ],
             'array type' => [
                 'typeDocClass' => new TypeDocNS\ArrayDoc(),
                 'expected' => 'array'
@@ -83,7 +87,7 @@ class SchemaTypeNormalizerTest extends TestCase
             ],
             'scalar type' => [
                 'typeDocClass' => new TypeDocNS\ScalarDoc(),
-                'expected' => 'string'
+                'expected' => null, // Swagger 2.0 doesn't allow multiple type !
             ],
             'string type' => [
                 'typeDocClass' => new TypeDocNS\StringDoc(),

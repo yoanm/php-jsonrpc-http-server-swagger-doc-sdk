@@ -7,7 +7,6 @@ Feature: TypeDoc normalization
     Then I should have the following TypeDoc:
     """
     {
-      "type": "string",
       "x-nullable": true
     }
     """
@@ -19,7 +18,6 @@ Feature: TypeDoc normalization
     Then I should have the following TypeDoc:
     """
     {
-      "type": "string",
       "x-nullable": true
     }
     """
@@ -93,9 +91,7 @@ Feature: TypeDoc normalization
     {
       "type": "array",
       "x-nullable": true,
-      "items": {
-        "type": "string"
-      }
+      "items": {}
     }
     """
 
@@ -108,9 +104,7 @@ Feature: TypeDoc normalization
     {
       "type": "array",
       "x-nullable": true,
-      "items": {
-        "type": "string"
-      }
+      "items": {}
     }
     """
 

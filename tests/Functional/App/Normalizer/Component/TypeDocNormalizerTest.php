@@ -48,14 +48,12 @@ class TypeDocNormalizerTest extends TestCase
             'Simple Doc' => [
                 'typeDoc' => new TypeDocNs\TypeDoc(),
                 'expected' => [
-                    'type' => 'string',
                     'x-nullable' => true,
                 ],
             ],
             'Simple ScalarDoc' => [
                 'typeDoc' => new TypeDocNs\ScalarDoc(),
                 'expected' => [
-                    'type' => 'string',
                     'x-nullable' => true,
                 ],
             ],
@@ -99,7 +97,7 @@ class TypeDocNormalizerTest extends TestCase
                 'expected' => [
                     'type' => 'array',
                     'x-nullable' => true,
-                    'items' => ['type' => 'string']
+                    'items' => []
                 ],
             ],
             'Simple ArrayDoc' => [
@@ -107,7 +105,7 @@ class TypeDocNormalizerTest extends TestCase
                 'expected' => [
                     'type' => 'array',
                     'x-nullable' => true,
-                    'items' => ['type' => 'string']
+                    'items' => []
                 ],
             ],
             'Simple ObjectDoc' => [
@@ -138,7 +136,6 @@ class TypeDocNormalizerTest extends TestCase
                     ->setDefault('my-default'),
                 'expected' => [
                     'description' => 'my-description',
-                    'type' => 'string',
                     'x-nullable' => false,
                     'default' => 'my-default',
                     'example' => 'my-example',
@@ -155,7 +152,6 @@ class TypeDocNormalizerTest extends TestCase
                     ->setDefault('my-default'),
                 'expected' => [
                     'description' => 'my-description',
-                    'type' => 'string',
                     'x-nullable' => false,
                     'default' => 'my-default',
                     'example' => 'my-example',
@@ -290,7 +286,7 @@ class TypeDocNormalizerTest extends TestCase
                     'example' => ['my-example'],
                     'minItems' => 2,
                     'maxItems' => 5,
-                    'items' => ['type' => 'string'],
+                    'items' => [],
                 ],
             ],
             'Fully defined ArrayDoc' => [
@@ -363,7 +359,6 @@ class TypeDocNormalizerTest extends TestCase
                     ->addAllowedValue(1)
                     ->addAllowedValue(23),
                 'expected' => [
-                    'type' => 'string',
                     'x-nullable' => true,
                     'enum' => [1, 23],
                 ],
@@ -376,7 +371,6 @@ class TypeDocNormalizerTest extends TestCase
                 ,
                 'expected' => [
                     'description' => 'my-description',
-                    'type' => 'string',
                     'x-nullable' => false,
                     'example' => 'my-example',
                 ],
@@ -474,7 +468,7 @@ class TypeDocNormalizerTest extends TestCase
                     'example' => ['my-example'],
                     'minItems' => 2,
                     'maxItems' => 5,
-                    'items' => ['type' => 'string'],
+                    'items' => [],
                 ],
             ],
             'Basic ObjectDoc' => [
