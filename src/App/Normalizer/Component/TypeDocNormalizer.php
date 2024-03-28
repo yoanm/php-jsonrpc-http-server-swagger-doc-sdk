@@ -47,7 +47,7 @@ class TypeDocNormalizer
         $format = ($doc instanceof StringDoc ? $doc->getFormat() : null);
 
         return $this->appendIfValueNotNull('description', $doc->getDescription())
-            + ['type' => $this->schemaTypeNormalizer->normalize($doc)]
+            + $this->appendIfValueNotNull('type', $this->schemaTypeNormalizer->normalize($doc))
             + $this->appendIfValueNotNull('format', $format)
             + ['x-nullable' => $doc->isNullable()]
             + $paramDocRequired
@@ -104,7 +104,8 @@ class TypeDocNormalizer
         if ($doc instanceof ArrayDoc && null !== $doc->getItemValidation()) {
             $siblingsDoc['items'] = $this->normalize($doc->getItemValidation());
         } else {
-            $siblingsDoc['items']['type'] = $this->guessItemsType($doc->getSiblingList());
+            $type = $this->guessItemsType($doc->getSiblingList());
+            $siblingsDoc['items'] = null !== $type ? ['type' => $type] : [];
         }
 
         return $siblingsDoc;
@@ -162,21 +163,24 @@ class TypeDocNormalizer
      *
      * @return string
      */
-    protected function guessItemsType(array $siblingList) : string
+    protected function guessItemsType(array $siblingList) : ?string
     {
         $self = $this;
         $uniqueTypeList = array_unique(
-            array_map(
-                function (TypeDoc $sibling) use ($self) {
-                    return $self->schemaTypeNormalizer->normalize($sibling);
-                },
-                $siblingList
+            array_filter(
+                array_map(
+                    function (TypeDoc $sibling) use ($self) {
+                        return $self->schemaTypeNormalizer->normalize($sibling);
+                    },
+                    $siblingList
+                ),
+                static fn ($value) => (null  !== $value)
             )
         );
 
         if (count($uniqueTypeList) !== 1) {
             // default string if sub item type not guessable
-            return 'string';
+            return null;
         }
 
         return array_shift($uniqueTypeList);

@@ -72,9 +72,7 @@ Feature: MethodDocNormalizer
         "array-val": {
           "type": "array",
           "x-nullable": true,
-          "items": {
-            "type": "string"
-          }
+          "items": {}
         }
       }
     }
@@ -111,9 +109,7 @@ Feature: MethodDocNormalizer
         "array-val": {
           "type": "array",
           "x-nullable": true,
-          "items": {
-            "type": "string"
-          }
+          "items": {}
         }
       }
     }
@@ -384,9 +380,7 @@ Feature: MethodDocNormalizer
             "array-val": {
               "type": "array",
               "x-nullable": true,
-              "items": {
-                "type": "string"
-              }
+              "items": {}
             }
           }
         },
@@ -401,9 +395,7 @@ Feature: MethodDocNormalizer
             "array-val": {
               "type": "array",
               "x-nullable": true,
-              "items": {
-                "type": "string"
-              }
+              "items": {}
             }
           }
         },
