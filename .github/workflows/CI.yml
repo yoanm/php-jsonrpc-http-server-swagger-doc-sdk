@@ -23,10 +23,6 @@ concurrency:
   group: "${{ github.workflow }}-${{ github.head_ref || github.ref }}"
   cancel-in-progress: true
 
-env:
-  TEST_OUTPUT_STYLE: pretty
-  COMPOSER_OPTIONS: --optimize-autoloader
-
 jobs:
   tests:
     name: Tests
