@@ -33,11 +33,11 @@ class SchemaTypeNormalizer
     /**
      * @param TypeDoc $doc
      *
-     * @return string
+     * @return ?string
      *
      * @throws \ReflectionException
      */
-    public function normalize(TypeDoc $doc) : string
+    public function normalize(TypeDoc $doc) : ?string
     {
         $type = str_replace('Doc', '', lcfirst((new \ReflectionClass($doc))->getShortName()));
         if (in_array($type, self::MANAGED_TYPE_LIST)) {
@@ -46,6 +46,6 @@ class SchemaTypeNormalizer
             return self::RENAMED_TYPE_LIST[$type];
         }
 
-        return 'string';
+        return null;
     }
 }

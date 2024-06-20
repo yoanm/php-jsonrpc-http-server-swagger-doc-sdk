@@ -20,7 +20,6 @@ Feature: TypeDoc normalization
     """
     {
       "description": "type-b-description",
-      "type": "string",
       "x-nullable": false,
       "default": "type-b-default",
       "example": "type-b-example",
@@ -48,7 +47,6 @@ Feature: TypeDoc normalization
     """
     {
       "description": "type-b-description",
-      "type": "string",
       "x-nullable": false,
       "default": "type-b-default",
       "example": "type-b-example",
@@ -265,9 +263,7 @@ Feature: TypeDoc normalization
       "enum": [["type-b-allowed-value-a"], ["type-b-allowed-value-b"]],
       "minItems": 2,
       "maxItems": 8,
-      "items": {
-        "type": "string"
-      }
+      "items": {}
     }
     """
 
@@ -304,10 +300,7 @@ Feature: TypeDoc normalization
       "enum": [["type-b-allowed-value-a"], ["type-b-allowed-value-b"]],
       "minItems": 2,
       "maxItems": 8,
-      "items": {
-        "type": "string",
-        "x-nullable": true
-      }
+      "items": {"x-nullable": true}
     }
     """
 
